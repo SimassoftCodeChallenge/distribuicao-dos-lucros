@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Tdd.Simasoft.Challenge.Lucro.Tdd.Utils;
 
 namespace Tdd.Simasoft.Challenge.Lucro.Tdd
 {
