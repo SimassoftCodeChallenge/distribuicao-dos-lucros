@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04-Testes", "04-Testes", "{3C65075B-D787-4965-B9F4-A80DE2F465E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tdd.Simasoft.Challenge.Lucro", "04-Testes\Tdd.Simasoft.Challenge.Lucro\Tdd.Simasoft.Challenge.Lucro.csproj", "{370998DD-DEAC-4268-ADE4-70D37BD5E09C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tdd.Simasoft.Challenge.Lucro", "04-Testes\Tdd.Simasoft.Challenge.Lucro\Tdd.Simasoft.Challenge.Lucro.csproj", "{370998DD-DEAC-4268-ADE4-70D37BD5E09C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Infra", "03-Infra", "{4B0DAC52-D7FE-4EA3-91FE-6AC036BEA6A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{370998DD-DEAC-4268-ADE4-70D37BD5E09C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -33,7 +32,13 @@ Global
 		{370998DD-DEAC-4268-ADE4-70D37BD5E09C}.Release|x86.ActiveCfg = Release|Any CPU
 		{370998DD-DEAC-4268-ADE4-70D37BD5E09C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{370998DD-DEAC-4268-ADE4-70D37BD5E09C} = {3C65075B-D787-4965-B9F4-A80DE2F465E5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E1651604-149D-41BF-8C11-D3552B3EBCB1}
 	EndGlobalSection
 EndGlobal

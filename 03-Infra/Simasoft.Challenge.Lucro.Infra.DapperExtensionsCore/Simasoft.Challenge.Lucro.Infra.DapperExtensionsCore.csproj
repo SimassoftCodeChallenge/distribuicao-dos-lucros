@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Description>Conversão do Dapper Extensions para .net Core</Description>
+    <Copyright>Simasoft do Brasil - Consultoria em TI - EIRELI</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.4" />
+	<PackageReference Include="Microsoft.CSharp" Version="4.6.0-preview5.19224.8" />
+  </ItemGroup>
+
+</Project>
