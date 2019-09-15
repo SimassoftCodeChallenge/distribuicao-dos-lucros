@@ -1,22 +1,25 @@
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Tdd.Simasoft.Challenge.Lucro.Tdd
 {
     [TestClass]
     public class BaseTeste
-    {
+    {        
         protected IConfiguration config = null;
         protected float? salarioMinimoNacional = null;
-
+        
         public static IConfiguration ConfiguracaoInicial()
         {
-            var config = new ConfigurationBuilder()
-                .AddJsonFile("appSettings.teste.json")
-                .Build();
-                return config;
+            return new ConfigurationBuilder()                
+                 .SetBasePath(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", ""))
+                 .AddJsonFile("appSettings.teste.json", optional: false, reloadOnChange: true)
+                 .Build();            
         }
 
+        [TestInitialize]
         public void Inicializacao()
         {
             config = ConfiguracaoInicial();

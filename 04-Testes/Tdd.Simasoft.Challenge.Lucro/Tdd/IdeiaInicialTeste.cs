@@ -1,144 +1,350 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Tdd.Simasoft.Challenge.Lucro.Tdd
 {
     [TestClass]
     public class IdeiaInicialTeste: BaseTeste
-    {
+    {        
+
         [TestMethod()]
-        public void CriaFuncionario(){
-            Funcionario vitorWilson = Funcionario.of(0009968,"Victor Wilson","Diretoria","Diretor Financeiro",12696.20f,new DateTime(2012,01,05));
+        public void CriaFuncionarioVitorWilson()
+        { 
+            Funcionario vitorWilson = new Funcionario(0009968,"Victor Wilson","Diretoria","Diretor Financeiro",12696.20f,new DateTime(2012,01,05));            
             Assert.IsTrue(vitorWilson != null);
         }
+        
+        [TestMethod()]
+        public void ConverteVitorWilsonEmParticipante()
+        {
+            Funcionario vitorWilson = new Funcionario(0009968, "Victor Wilson", "Diretoria", "Diretor Financeiro", 12696.20f, new DateTime(2012, 01, 05));
+            Participacao participante = new Participacao(vitorWilson, salarioMinimoNacional.Value);
+            Assert.IsTrue(!string.IsNullOrEmpty(participante.Nome));
+        }
+
+        [TestMethod()]
+        public void GeraPesosParaVitorWilson()
+        {
+            Funcionario vitorWilson = new Funcionario(0009968, "Victor Wilson", "Diretoria", "Diretor Financeiro", 12696.20f, new DateTime(2012, 01, 05));
+            Participacao participante = new Participacao(vitorWilson, salarioMinimoNacional.Value);
+            Peso pesoVitorWilson = new Peso(participante.AreaDeAtuacao, participante.SalarioBruto, participante.DataDeAdmissao, salarioMinimoNacional.Value,participante.Estagiario);
+            Assert.IsTrue(pesoVitorWilson.RetornaPesoAreaDeAtuacao() == 1 && pesoVitorWilson.RetornaPesoFaixaSalarial() == 13 && pesoVitorWilson.RetornaPesoTempoAdmissao() == 7);
+        }
+
+        [TestMethod()]
+        public void DeserializaArquivoDeDadosJsonParaDominioFuncionario()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            List<Funcionario> funcionarios = JsonConvert.DeserializeObject<List<Funcionario>>(json, new FuncionarioConverter());
+
+            Assert.IsTrue(funcionarios.Count > 0);
+        }
+
+        [TestMethod()]
+        public void ConverteFuncionariosDoJsonEmParticipantes()
+        {
+            var salarioMinimo = salarioMinimoNacional;
+            List<Funcionario> funcionarios = PegaListaDeFuncionariosViaJson();
+            List<Participacao> participantes = new List<Participacao>();
+            funcionarios.ForEach(x =>
+            {
+                participantes.Add(new Participacao(x, salarioMinimo.Value));
+            });
+            Assert.IsTrue(participantes.Count == funcionarios.Count);
+        } 
+        
+        [TestMethod()]
+        public void CalculaParticipacaoDosFuncionariosCadastrados()
+        {
+            List<Participacao> participantes = PegaListaDeFuncionariosConvertidosEmParticipantes();
+            var calculoParticipacao = new DistribuicaoLucro(participantes, 1000000, salarioMinimoNacional.Value);
+            Assert.IsTrue(true);
+        }
+
+        public List<Participacao> PegaListaDeFuncionariosConvertidosEmParticipantes()
+        {
+            var salarioMinimo = salarioMinimoNacional;
+            List<Funcionario> funcionarios = PegaListaDeFuncionariosViaJson();
+            List<Participacao> participantes = new List<Participacao>();
+            funcionarios.ForEach(x =>
+            {
+                participantes.Add(new Participacao(x, salarioMinimo.Value));
+            });
+            return participantes;
+        }
+
+        public List<Funcionario> PegaListaDeFuncionariosViaJson()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            return JsonConvert.DeserializeObject<List<Funcionario>>(json, new FuncionarioConverter());
+        }           
     }
-    
+
+    public class FuncionarioConverter : CustomCreationConverter<Funcionario>
+    {
+        public override Funcionario Create(Type objectType)
+        {
+            return new Funcionario();
+        }
+    }
+
     public sealed class Funcionario
     {
+        [JsonProperty("matricula")]
         public long? Matricula { get; private set; }
+
+        [JsonProperty("nome")]
         public string Nome { get; private set; }
+
+        [JsonProperty("area")]
         public string Area { get; private set; }
+
+        [JsonProperty("cargo")]
         public string Cargo { get; private set; }
+
+        [JsonProperty("salario_bruto")]
         public float SalarioBruto { get; private set; }
+
+        [JsonProperty("data_de_admissao")]
         public DateTime DataAdmissao { get; private set; }
 
-        public static Funcionario of(long? _matricula,string _nome,string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao){
-            return new Funcionario(_matricula, _nome, _area, _cargo, _salarioBruto, _dataAdmissao);
-        }
-        private Funcionario(long? _matricula,string _nome,string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao){
+        public bool EhEstagiario { get => ValidaCargoDeEstagiario(Cargo);}
+
+        public Funcionario() { }
+        
+        public Funcionario(long? _matricula,string _nome,string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao)
+        {
             Matricula = _matricula;
             Nome = _nome;
             Area = _area;
             Cargo = _cargo;
             SalarioBruto = _salarioBruto;
-            DataAdmissao = _dataAdmissao;    
-        }  
-    }      
-    public sealed class Peso
-    {
-        public int AreaAtuacao { get; private set; }
-        public int FaixaSalarial { get; private set; }
-        public int TempoAdmissao {get; private set;}
-
-        private Peso(){
-
+            DataAdmissao = _dataAdmissao;            
         }
 
-        public static int CalculaAreaDeAtuacao(string area){
-            switch(area.ToLower()){
+        private bool ValidaCargoDeEstagiario(string cargo)
+        {
+            return cargo.ToLower() == "estagiário" || cargo.ToLower() == "estagiario" ? true : false;
+        }
+    }      
+
+    public sealed class Peso
+    {        
+        private int _areaAtuacao;
+        private int _faixaSalarial;
+        private int _tempoAdmissao;        
+
+        private readonly bool _ehEstagiario;
+
+        public int PesoPorTempoDeAdmissao { get => RetornaPesoTempoAdmissao(); }
+        public int PesoPorFaixaSalarial { get => RetornaPesoFaixaSalarial();}
+        public int PesoPorAreaDeAtuacao { get => RetornaPesoAreaDeAtuacao();}
+
+        public Peso(string areaAtuacao, float salarioBruto, DateTime dataAdmissao, float salarioMinimoNacional, bool estagiario)
+        {            
+            _areaAtuacao = CalculaPesoPorAreaDeAtuacao(areaAtuacao);
+            _faixaSalarial = CalculaPesoPorFaixaSalarial(salarioBruto, salarioMinimoNacional);
+            _tempoAdmissao = CalculaPesoPorTempoDeAdmissao(dataAdmissao);
+            _ehEstagiario = estagiario;
+        }
+
+
+
+        private int CalculaPesoPorTempoDeAdmissao(DateTime dataAdmissao)
+        {
+            return DateTime.Now.Year - dataAdmissao.Year;
+        }
+
+        private int CalculaPesoPorFaixaSalarial(float salarioBruto, float salarioMinimoNacional)
+        {
+            return (int)Math.Round(salarioBruto / salarioMinimoNacional);
+        }
+
+        private int CalculaPesoPorAreaDeAtuacao(string areaAtuacao)
+        {
+            switch (areaAtuacao.ToLower())
+            {
                 case "diretoria":
-                    return 1;                
+                    return 1;
                 case "contabilidade":
                 case "financeiro":
                 case "tecnologia":
-                    return 2;                
+                    return 2;
                 case "serviços gerais":
-                    return 3;                
+                    return 3;
                 case "relacionamento com o cliente":
-                    return 5;                
+                    return 5;
             }
             return 0;
         }
-
-        public static int CalculaFaixaSalarial(float faixaSalarial, bool ehEstagiario)
+               
+        public int RetornaPesoFaixaSalarial()
         {
-            if(ehEstagiario || (faixaSalarial > 0 && faixaSalarial <= 3))
+            if(_ehEstagiario || (_faixaSalarial > 0 && _faixaSalarial <= 3))
                 return 1;
-            if(faixaSalarial > 3 && faixaSalarial < 5)
+            if(_faixaSalarial > 3 && _faixaSalarial <= 5)
                 return 2;
-            if(faixaSalarial > 5 && faixaSalarial < 8)
+            if(_faixaSalarial > 5 && _faixaSalarial <= 8)
                 return 3;
-            if(faixaSalarial > 8)
-                return 5;
-
+            if(_faixaSalarial > 8)
+                return 5;            
             return 0;            
         }
 
-        public static int CalculaTempoAdmissao(int tempoDeCasa)
+        public int RetornaPesoTempoAdmissao()
         {
-            if(tempoDeCasa <= 1)
+            if(_tempoAdmissao <= 1)
                 return 1;
-            if(tempoDeCasa > 1 && tempoDeCasa < 3)
+            if(_tempoAdmissao > 1 && _tempoAdmissao <= 3)
                 return 2;
-            if(tempoDeCasa > 3 && tempoDeCasa < 8)
+            if(_tempoAdmissao > 3 && _tempoAdmissao <= 8)
                 return 3;
-            if(tempoDeCasa > 8)
+            if(_tempoAdmissao > 8)
                 return 5;
             
             return 0;
         }
+
+        public int RetornaPesoAreaDeAtuacao()
+        {
+            return _areaAtuacao;
+        }
     }
+
     public sealed class Participacao
-    {        
-        private Participacao() {}
-        public static Participacao of(Funcionario participante) => new Participacao(participante);
-        private Participacao(Funcionario participante)
-        {
-            Participante = participante;
-        }
-        public static Funcionario Participante { get; private set; }
-        public static float ValorParticipacao { get; private set; }
-        public static float CalculaParticipacao(Funcionario participante)
-        {
-            float sb = participante.SalarioBruto;
-            int pta = Peso.CalculaTempoAdmissao(CalculaTempoAdmissao());
-            int paa = 0;
-            int pfs = 0;
-
-            ValorParticipacao = (((sb * pta) + (sb * paa)) / (pfs)) * 12;
-
-            return ValorParticipacao;
-        }
-        
-        public static int CalculaTempoAdmissao() => Participante.DataAdmissao.Year - Participante.DataAdmissao.Year;
-        public static int CalculaFaixaSalarial() => Participante.SalarioBruto / float.Parse();
-        public static float CalcularParticipacao(Participante participante)
-        {
-
-        }
-    }
-    public class DistribuicaoLucro
     {
-        public static DistribuicaoLucro of(IEnumerable<Participacao> participantes){
-            return new DistribuicaoLucro(participantes);
-        }
-        private DistribuicaoLucro(IEnumerable<Participacao> participantes)
-        {
-            Participantes = participantes;
-        }        
-        public IReadOnlyCollection<Participacao> Participantes { get; private set; }        
+        private readonly float _salarioMinimoRegional;
+        private readonly Funcionario _participante;
+        private float _valorParticipacao;
+        private readonly Peso _peso;
 
-        public static float TotalDisponibilizado {get; private set;}
-        public float ValorDisponibilizdo { get; private set; }
-        public static void RecebeValorASerDisponibilizado(float valorDisponibilizado)
+        public Participacao(Funcionario participante, float salarioMinimoRegional)
         {
-            ValorDisponibilizado = valorDisponibilizado;
+            _participante = participante;
+            _salarioMinimoRegional = salarioMinimoRegional;
+            _peso = new Peso(_participante.Area,_participante.SalarioBruto, _participante.DataAdmissao, _salarioMinimoRegional, _participante.EhEstagiario);
+        }                       
+
+        public string AreaDeAtuacao
+        {
+            get => _participante.Area;
+            
         }
 
-        public static float TotalDisponibilizado() => ValorDisponibilizdo;
-        public static float TotalDeFuncionarios() => 0.00;
-        public static float TotalDistribuido() => 0.00;        
+        public float SalarioBruto
+        {
+            get => _participante.SalarioBruto;            
+        }
+
+        public bool Estagiario
+        {
+            get => _participante.EhEstagiario;
+        }
+
+        public long? Matricula
+        {
+            get => _participante.Matricula;
+        }
+
+        public string Nome
+        {
+            get => _participante.Nome;
+        }
+
+        public DateTime DataDeAdmissao
+        {
+            get => _participante.DataAdmissao;
+        }
+
+        public void ValorDeParticipacaoAReceber(float valorParticipacao)
+        {
+            _valorParticipacao = valorParticipacao;
+        }
+
+        public float ValorDeParticipacaoRecebido()
+        {
+            return _valorParticipacao;
+        }      
+        
+        public Peso Pesos
+        {
+            get => _peso;
+        }
     }
+
+    public sealed class DistribuicaoLucro
+    {
+        private readonly List<Participacao> _participantes;
+        private readonly float _valorDisponibilizado;
+        private readonly float _salarioMinimoNacional;
+        
+        public DistribuicaoLucro(List<Participacao> participantes, float valorDisponibilizado, float salarioMinimoNacional)
+        {
+            _participantes = new List<Participacao>();
+            if (participantes != null && participantes.Count > 0)
+            {
+                _participantes.AddRange(participantes);
+            }
+            _salarioMinimoNacional = salarioMinimoNacional;
+            _valorDisponibilizado = valorDisponibilizado;
+
+            CalcularParticipacaoDosFuncionarios();            
+        }
+
+        public int TotalDeFuncionarios
+        {
+            get => InformaTotalDeFuncionarios();
+        }
+
+        public float TotalDistribuido
+        {
+            get => InformaTotalDistribuido();
+        }
+
+        public float SaldoTotalDisponibilizado
+        {
+            get => InformaSaldoTotalDisponibilizado();
+        }
+
+        public float TotalDisponibilizado
+        {
+            get => _valorDisponibilizado;
+        }
+
+        private float CalculaParticipacaoDoFuncionario(Participacao participante, float salarioMinimoNacional)
+        {
+            //Peso peso = new Peso(participante.AreaDeAtuacao, participante.SalarioBruto, participante.DataDeAdmissao,salarioMinimoNacional,participante.Estagiario);
+
+            float sb = participante.SalarioBruto;
+            int pta = participante.Pesos.RetornaPesoTempoAdmissao();
+            int pfs = participante.Pesos.RetornaPesoFaixaSalarial();
+            int paa = participante.Pesos.RetornaPesoAreaDeAtuacao();
+
+            float _valorParticipacao = (((sb * pta) + (sb * paa)) / (pfs)) * 12;
+            return _valorParticipacao;
+        }
+
+        private void CalcularParticipacaoDosFuncionarios()
+        {
+            foreach(var _funcionario in _participantes)
+            {
+                float _valorDeParticipacao = CalculaParticipacaoDoFuncionario(_funcionario,_salarioMinimoNacional);
+                _funcionario.ValorDeParticipacaoAReceber(_valorDeParticipacao);
+            }
+        }
+
+        public IReadOnlyCollection<Participacao> Participantes => _participantes.ToArray();
+        
+        private int InformaTotalDeFuncionarios() => _participantes.ToArray().Length;
+        private float InformaTotalDistribuido() => _participantes.ToArray().Sum(x => x.ValorDeParticipacaoRecebido());        
+        private float InformaSaldoTotalDisponibilizado() => _valorDisponibilizado - InformaTotalDistribuido();
+               
     }
 }
