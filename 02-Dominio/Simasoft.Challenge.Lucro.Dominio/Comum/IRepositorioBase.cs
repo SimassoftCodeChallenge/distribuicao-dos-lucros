@@ -7,14 +7,15 @@ namespace Simasoft.Challenge.Lucro.Dominio.Comum
 {
     public interface IRepositorioBase<T> where T : class
     {
-        Task<T> Listar(object predicado);
-        Task<IEnumerable<T>> ListarTodos();
-        Task<IEnumerable<T>> PegaLista(object predicate);
-        Task Inserir(T obj);
-        Task Inserir(IEnumerable<T> obj);
-        Task<long> InserirRetornandoId(T obj);
-        Task<IEnumerable<long>> InserirRetornandoId(IEnumerable<T> obj);
-        Task Atualizar(T obj);
-        Task Apagar(object predicado);        
+        T Listar(object predicado);
+        IEnumerable<T> ListarTodos();
+        IEnumerable<T> PegaLista(object predicate);
+        void Inserir(T obj);
+        void Inserir(IEnumerable<T> obj);
+        long InserirRetornandoId(T obj);
+        IEnumerable<long> InserirRetornandoId(IEnumerable<T> obj);
+        void Atualizar(T obj);
+        void Apagar(object predicado);
+        bool Apagar(T obj);
     }
 }

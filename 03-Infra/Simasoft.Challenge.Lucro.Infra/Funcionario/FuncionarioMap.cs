@@ -1,13 +1,10 @@
 ﻿using DapperExtensions.Mapper;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Simasoft.Challenge.Lucro.Infra.Colaborador
+namespace Simasoft.Challenge.Lucro.Infra.Funcionario
 {
-    public class ColaboradorMap : ClassMapper<Colaborador>
+    public class FuncionarioMap : ClassMapper<Entidade>
     {
-        public ColaboradorMap()
+        public FuncionarioMap()
         {
             Table("funcionario");
             Map(f => f.Id).Column("id").Key(KeyType.Identity);
@@ -16,8 +13,7 @@ namespace Simasoft.Challenge.Lucro.Infra.Colaborador
             Map(f => f.Area).Column("area");
             Map(f => f.Cargo).Column("cargo");
             Map(f => f.SalarioBruto).Column("salariobruto");
-            Map(f => f.Estagiario).Column("estagiario");
-            AutoMap();
+            Map(f => f.Estagiario).Column("estagiario");            
         }
     }
 }

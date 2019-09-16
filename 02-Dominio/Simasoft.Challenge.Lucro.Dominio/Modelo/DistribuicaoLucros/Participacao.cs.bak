@@ -8,15 +8,15 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
     public sealed class Participacao
     {
         private readonly float _salarioMinimoRegional;
-        private readonly Funcionario _participante;
+        private readonly Colaborador _participante;
         private float _valorParticipacao;
         private readonly Peso _peso;
 
-        public Participacao(Funcionario participante, float salarioMinimoRegional)
+        public Participacao(Colaborador participante, float salarioMinimoRegional)
         {
             _participante = participante;
             _salarioMinimoRegional = salarioMinimoRegional;
-            _peso = new Peso(_participante.Area, _participante.SalarioBruto, _participante.DataAdmissao, _salarioMinimoRegional, _participante.Estagiario);
+            _peso = new Peso(_participante.Area, _participante.SalarioBruto, _participante.DataAdmissao, _salarioMinimoRegional, _participante.EhEstagiario);
         }
 
         public string AreaDeAtuacao
@@ -32,7 +32,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
 
         public bool Estagiario
         {
-            get => _participante.Estagiario;
+            get => _participante.EhEstagiario;
         }
 
         public long? Matricula
