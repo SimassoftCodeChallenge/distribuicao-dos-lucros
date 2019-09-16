@@ -2,19 +2,20 @@
 using DapperExtensions.Mapper;
 using DapperExtensions.Sql;
 using Simasoft.Challenge.Lucro.Dominio.Comum;
-using Simasoft.Challenge.Lucro.Infra.Colaborador;
 using Simasoft.Challenge.Lucro.Infra.Comum;
 using Simasoft.Challenge.Lucro.Infra.DapperExtensionsCore;
+using Simasoft.Challenge.Lucro.Infra.Funcionario;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Simasoft.Challenge.Lucro.Infra.Repositorios.Sqlite
 {
-    public abstract class RepositorioSQLiteBase<T> : IRepositorioBase<T> where T: EntidadeBase
+    public abstract class RepositorioSQLiteBase<T> : IRepositorioBase<T> where T: class
     {
         protected IDbConnection dbconnection;
         protected readonly IDbTransaction dbTransaction;
@@ -25,64 +26,112 @@ namespace Simasoft.Challenge.Lucro.Infra.Repositorios.Sqlite
             SQLiteConnectionFactory(connectionStrings);
         }
 
-        public async Task<T> Listar(object predicado)
+        public T Listar(object predicado)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                return Db.Get<T>(predicado);
+            }
         }
 
-        public async Task<IEnumerable<T>> ListarTodos()
+        public IEnumerable<T> ListarTodos()
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                return Db.GetList<T>();
+            }
         }
 
-        public Task<IEnumerable<T>> PegaLista(object predicate)
+        public IEnumerable<T> PegaLista(object predicado)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                return Db.GetList<T>(predicado);
+            }
         }
 
-        public Task Inserir(T obj)
+        public void Inserir(T obj)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                Db.Insert(obj);
+            }
         }
 
-        public Task Inserir(IEnumerable<T> obj)
+        public void Inserir(IEnumerable<T> obj)
         {
-            throw new NotImplementedException();
+            if (obj != null && obj.Count() > 1)
+            {
+                foreach (var item in obj)
+                {
+                    Inserir(item);
+                }
+            }
+            else
+            {
+                if (obj != null && obj.Count() == 1)
+                    Inserir(obj.SingleOrDefault());
+            }
         }
 
-        public Task<long> InserirRetornandoId(T obj)
+        public long InserirRetornandoId(T obj)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                return Db.Insert(obj);
+            }
         }
 
-        public Task<IEnumerable<long>> InserirRetornandoId(IEnumerable<T> obj)
+        public IEnumerable<long> InserirRetornandoId(IEnumerable<T> obj)
         {
-            throw new NotImplementedException();
+            List<long> ids = new List<long>();
+
+            foreach (var item in obj)
+            {
+                var id = InserirRetornandoId(item);
+                ids.Add(id);
+            }
+
+            return ids;
         }
 
-        public Task Atualizar(T obj)
+        public void Atualizar(T obj)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                Db.Update(obj);
+            }
         }
 
-        public Task Apagar(object predicado)
+        public void Apagar(object predicado)
         {
-            throw new NotImplementedException();
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                Db.Delete(predicado);
+            }
+        }
+
+        public bool Apagar(T obj)
+        {
+            bool resultado = false;
+            using (IDatabase Db = new Database(dbconnection, sqlGenerator))
+            {
+                resultado = Db.Delete(obj);
+            }
+            return resultado;
         }
 
         private void SQLiteConnectionFactory(string connectionString)
         {
             var sqlDialectAsync = DapperAsyncExtensions.SqlDialect = new SqliteDialect();
-            dbconnection = new SQLiteConnection(connectionString);
+            dbconnection = new SQLiteConnection(connectionString,true);
             var config = new DapperExtensionsConfiguration(
                             typeof(AutoClassMapper<>),
-                            new List<Assembly>() { typeof(ColaboradorMap).Assembly },
+                            new List<Assembly>() { typeof(FuncionarioMap).Assembly },
                             sqlDialectAsync
                         );
 
-            sqlGenerator = new SqlGeneratorImpl(config);
-            
-        }
-
+            sqlGenerator = new SqlGeneratorImpl(config);            
+        }       
     }
 }

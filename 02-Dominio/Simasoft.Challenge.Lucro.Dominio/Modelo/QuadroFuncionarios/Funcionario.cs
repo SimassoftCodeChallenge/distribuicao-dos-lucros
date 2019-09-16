@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
 {
-    public class Colaborador: EntidadeBase
+    public class Funcionario
     {        
         public long? Matricula { get; private set; }              
         public string Nome { get; private set; }                
@@ -13,16 +13,26 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
         public string Cargo { get; private set; }
         public float SalarioBruto { get; private set; }
         public DateTime DataAdmissao { get; private set; }
-        public bool EhEstagiario { get => ValidaCargoDeEstagiario(Cargo); }               
+        public bool Estagiario { get => ValidaCargoDeEstagiario(Cargo); }               
 
-        public Colaborador(long? _matricula, string _nome, string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao)
+        public Funcionario(long? _matricula, string _nome, string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao)
         {
             Matricula = _matricula;
             Nome = _nome;
             Area = _area;
             Cargo = _cargo;
             SalarioBruto = _salarioBruto;
-            DataAdmissao = _dataAdmissao;
+            DataAdmissao = _dataAdmissao;            
+        }
+
+        public Funcionario(long matricula, string nome, string area, string cargo, decimal salariobruto, string dataadmissao, long estagiario)
+        {
+            Matricula = matricula;
+            Nome = nome;
+            Area = area;
+            Cargo = cargo;
+            SalarioBruto = float.Parse(salariobruto.ToString());
+            DataAdmissao = DateTime.Parse(dataadmissao);
         }
 
         private bool ValidaCargoDeEstagiario(string cargo)
