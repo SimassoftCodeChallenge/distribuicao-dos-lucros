@@ -7,6 +7,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
 {
     public class Funcionario
     {        
+        public long Id { get; set; }
         public long? Matricula { get; private set; }              
         public string Nome { get; private set; }                
         public string Area { get; private set; }
