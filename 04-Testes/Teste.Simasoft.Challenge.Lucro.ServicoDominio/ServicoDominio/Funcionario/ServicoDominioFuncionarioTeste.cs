@@ -2,14 +2,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Linq;
 
 using Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios;
 using Simasoft.Challenge.Lucro.Dominio.Contratos.Servicos;
 using Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio;
+using modelo = Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios;
+using System.Threading.Tasks;
 
 namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionario
 {
@@ -28,10 +27,8 @@ namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionar
 
             var service = new ServiceCollection();
             service.AdicionarInjecaoDependenciaRepositorio(connectionStrings);
-            var serviceProvider = service.BuildServiceProvider();
-
-            _repositorio = serviceProvider.GetService<IRepositorioFuncionario>();
-            //_dominioServico = new ServicoDominioFuncionario(_repositorio);
+            var serviceProvider = service.BuildServiceProvider();            
+            _dominioServico = serviceProvider.GetService<IServicoDominioFuncionario>();
         }
 
         private static IConfiguration ConfiguracaoInicial()
@@ -42,24 +39,17 @@ namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionar
              .Build();
         }
 
-        /*[TestMethod()]
-        public void CadastrarFuncionario()
-        {
-            dominio.Funcionario _funcionario = new dominio.Funcionario(0004468, "Flossie Wilson", "Contabilidade", "Auxiliar de Contabilidade", 1396.52f, new DateTime(2015, 01, 05));
-           long id = _dominioServico.CadastrarFuncionario(_funcionario);
-            Assert.IsTrue(id > 0);
-        }
-
         [TestMethod()]
-        public void CadastrarFuncionarios()
+        public async Task CadastrarFuncionarios()
         {
-            List<dominio.Funcionario> funcionarios = new List<dominio.Funcionario>();
-
-            funcionarios.Add(new dominio.Funcionario(0004468, "Flossie Wilson", "Contabilidade", "Auxiliar de Contabilidade", 1396.52f, new DateTime(2015, 01, 05)));
-            funcionarios.Add(new dominio.Funcionario(0008174, "Sherman Hodges", "Relacionamento com o Cliente", "Líder de Relacionamento", 3899.74f, new DateTime(2015, 06, 07)));
-
-            var ids = _dominioServico.CadastrarFuncionarios(funcionarios.AsEnumerable());
-            Assert.IsTrue(ids.Count() == 2);
-        }*/
-    }
+            modelo.Funcionario[] funcionarios =  new modelo.Funcionario[] { 
+                new modelo.Funcionario(0006877,"Cross Perkins","Relacionamento com o Cliente","Líder de Ouvidoria",3371.47f,new DateTime(2016,12,06)),
+                new modelo.Funcionario(0008601,"Taylor Mccarthy","Relacionamento com o Cliente","Auxiliar de Ouvidoria",1800.16f,new DateTime(2017,03,31)),
+                new modelo.Funcionario(0002105,"Dorthy Lee","Financeiro","Estagiário",1491.45f,new DateTime(2015,03,16)),
+                new modelo.Funcionario(0000273,"Petersen Coleman","Financeiro","Estagiário",1426.13f,new DateTime(2016,09,20))
+            };            
+            await _dominioServico.CadastrarFuncionarios(funcionarios);
+            Assert.IsTrue(true);
+        }                    
+    }   
 }

@@ -101,7 +101,7 @@ namespace Tdd.Simasoft.Challenge.Lucro.Tdd
         [JsonProperty("matricula")]
         public long? Matricula { get; private set; }
 
-        [JsonProperty("nome")]
+        [JsonProperty("nome")]        
         public string Nome { get; private set; }
 
         [JsonProperty("area")]

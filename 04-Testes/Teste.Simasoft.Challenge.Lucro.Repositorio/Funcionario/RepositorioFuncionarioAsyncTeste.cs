@@ -11,6 +11,9 @@ using Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio;
 using entidade = Simasoft.Challenge.Lucro.Infra.Entidades;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
 {
@@ -78,9 +81,54 @@ namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
             
         }
 
+        [TestMethod()]
+        public void DeserializaArquivoDeDadosJsonParaFuncionarioComoLista()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            List<entidade.Funcionario> funcionarios = JsonConvert.DeserializeObject<List<entidade.Funcionario>>(json, new FuncionarioConverter());
+
+            Assert.IsTrue(funcionarios.Count > 0);
+        }
+
+        [TestMethod()]
+        public void DeserializaArquivoDeDadosJsonParaFuncionarioComoArray()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            entidade.Funcionario[] funcionarios = JsonConvert.DeserializeObject<entidade.Funcionario[]>(json, new FuncionarioConverter());
+
+            Assert.IsTrue(funcionarios.Length > 0);
+        }
+
+        [TestMethod]
         public async Task CadastrarFuncionariosTeste() 
         {
-            
+            entidade.Funcionario[] funcionarios = PegaArrayDeFuncionariosViaJson();
+            await _repositorio.InserirAsync(funcionarios);
+            Assert.IsTrue(true);
+        }  
+
+        private List<entidade.Funcionario> PegaListaDeFuncionariosViaJson()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            return JsonConvert.DeserializeObject<List<entidade.Funcionario>>(json, new FuncionarioConverter());
+        }                 
+
+        private entidade.Funcionario[] PegaArrayDeFuncionariosViaJson()
+        {
+            string arquivoJson = $"{Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "")}\\baseteste.json";
+            string json = File.ReadAllText($"{arquivoJson}");
+            return JsonConvert.DeserializeObject<entidade.Funcionario[]>(json, new FuncionarioConverter());
+        }                 
+    }
+
+    public class FuncionarioConverter : CustomCreationConverter<entidade.Funcionario>
+    {
+        public override entidade.Funcionario Create(Type objectType)
+        {
+            return new entidade.Funcionario();
         }
     }
 }

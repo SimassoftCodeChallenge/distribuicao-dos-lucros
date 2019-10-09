@@ -4,6 +4,9 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
 {
     public class Funcionario: IEntidade
     {
+        public Funcionario(){
+            
+        }
         public Funcionario(long id, long? matricula, string nome, string area, string cargo, float salarioBruto, DateTime dataAdmissao)
         {
             Id = id;
