@@ -1,8 +1,9 @@
 ﻿using DapperExtensions.Mapper;
+using Simasoft.Challenge.Lucro.Infra.Entidades;
 
-namespace Simasoft.Challenge.Lucro.Infra.Funcionario
+namespace Simasoft.Challenge.Lucro.Infra.Sqlite.Mapeamentos
 {
-    public class FuncionarioMap : ClassMapper<Entidade>
+    public class FuncionarioMap : ClassMapper<Funcionario>
     {
         public FuncionarioMap()
         {

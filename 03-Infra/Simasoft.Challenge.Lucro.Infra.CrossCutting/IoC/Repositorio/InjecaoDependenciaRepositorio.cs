@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios;
-using Simasoft.Challenge.Lucro.Infra.Funcionario;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios;
+using Simasoft.Challenge.Lucro.Infra.Dapper.Sqlite.Repositorios;
 
-namespace Simasoft.Challenge.Lucro.Infra.Config
+namespace Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio
 {
     public static class InjecaoDependenciaRepositorio
     {
