@@ -7,7 +7,8 @@ namespace Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios.Comum
          bool Apagar(T obj);
          void Atualizar(T obj);
          long? Inserir(T obj);
-         void Inserir(IEnumerable<T> obj);                          
+         void Inserir(IEnumerable<T> obj);  
+         void Inserir(T[] obj);                        
          IEnumerable<T> ListarTodos();   
          IEnumerable<T> ListarPor(object filtro);        
     }    

@@ -11,7 +11,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
         public string Cargo { get; private set; }
         public float SalarioBruto { get; private set; }
         public DateTime DataAdmissao { get; private set; }
-        public bool Estagiario { get => ValidaCargoDeEstagiario(Cargo); }               
+        public bool Estagiario { get => ValidaCargoDeEstagiario(Cargo); }                      
 
         public Funcionario(long? _matricula, string _nome, string _area, string _cargo, float _salarioBruto, DateTime _dataAdmissao)
         {

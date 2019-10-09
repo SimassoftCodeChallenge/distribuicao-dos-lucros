@@ -71,7 +71,18 @@ namespace Simasoft.Challenge.Lucro.Infra.Dapper.Sqlite.Repositorios.Bases
             }
         }
 
-        public override async Task<IEnumerable<T>> ListarPor(object filtro){
+        public override async Task InserirAsync(T[] obj)
+        {
+            if (obj != null && obj.Count() > 0)
+            {
+                foreach (var item in obj)
+                {
+                    await InserirAsync(item);
+                }
+            }
+        }
+
+        public override async Task<IEnumerable<T>> ListarPorAsync(object filtro){
             using (IDatabaseAsync Db = new DatabaseAsync(dbconnection, sqlGenerator))
             {
                 return await Db.GetListAsync<T>(filtro);

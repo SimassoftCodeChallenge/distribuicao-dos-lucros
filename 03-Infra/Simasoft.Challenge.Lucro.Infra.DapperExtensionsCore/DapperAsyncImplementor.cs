@@ -161,6 +161,7 @@ namespace Simasoft.Challenge.Lucro.Infra.DapperExtensionsCore
                     result = connection.Query<long>(sql, entity, transaction, false, commandTimeout, CommandType.Text);
                 }
 
+                //TODO: Adicionar validação de acordo com os tipos de Campo
                 long identityValue = result.First();
                 int identityInt = Convert.ToInt32(identityValue);
                 keyValues.Add(identityColumn.Name, identityInt);

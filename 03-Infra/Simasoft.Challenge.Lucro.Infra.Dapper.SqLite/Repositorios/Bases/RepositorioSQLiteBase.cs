@@ -7,9 +7,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Reflection;
-using Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios.Comum;
 using Simasoft.Challenge.Lucro.Infra.Sqlite.Mapeamentos;
-using entidade = Simasoft.Challenge.Lucro.Infra.Entidades;
 using Simasoft.Challenge.Lucro.Infra.Repositorios.Bases;
 
 namespace Simasoft.Challenge.Lucro.Infra.Dapper.Sqlite.Repositorios.Bases
@@ -54,6 +52,17 @@ namespace Simasoft.Challenge.Lucro.Infra.Dapper.Sqlite.Repositorios.Bases
                     Inserir(item);
                 }
             }           
+        }
+
+        public override void Inserir(T[] obj)
+        {
+            if (obj != null && obj.Count() > 0)
+            {
+                foreach (var item in obj)
+                {
+                    Inserir(item);
+                }
+            }      
         }
         public override void Atualizar(T obj)
         {

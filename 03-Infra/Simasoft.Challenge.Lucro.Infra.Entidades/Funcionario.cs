@@ -4,7 +4,10 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
 {
     public class Funcionario: IEntidade
     {
-        public Funcionario(long? id, long? matricula, string nome, string area, string cargo, float salarioBruto, DateTime dataAdmissao)
+        public Funcionario(){
+            
+        }
+        public Funcionario(long id, long? matricula, string nome, string area, string cargo, float salarioBruto, DateTime dataAdmissao)
         {
             Id = id;
             Matricula = matricula;
@@ -23,14 +26,15 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
             Cargo = cargo;
             SalarioBruto = salarioBruto;
             DataAdmissao = dataAdmissao;
-        }
-        public long? Id { get ; set; }
-        public long? Matricula { get; private set; }        
-        public string Nome { get; private set; }        
-        public string Area { get; private set; }       
-        public string Cargo { get; private set; }        
-        public float SalarioBruto { get; private set; }        
-        public DateTime DataAdmissao { get; private set; }
+        }        
+
+        public long Id { get ; set; }
+        public long? Matricula { get; set; }        
+        public string Nome { get; set; }        
+        public string Area { get; set; }       
+        public string Cargo { get; set; }        
+        public float SalarioBruto { get; set; }        
+        public DateTime DataAdmissao { get; set; }
         public bool Estagiario { get; set; }        
     }
 }

@@ -18,5 +18,6 @@
   <ItemGroup>        
     <ProjectReference Include="..\..\02-Dominio\Simasoft.Challenge.Lucro.Dominio.Contratos\Simasoft.Challenge.Lucro.Dominio.Contratos.csproj" />
     <ProjectReference Include="..\..\03-Infra\Simasoft.Challenge.Lucro.Infra.CrossCutting\Simasoft.Challenge.Lucro.Infra.CrossCutting.csproj" />
+    <ProjectReference Include="..\..\02-Dominio\Simasoft.Challenge.Lucro.Dominio\Simasoft.Challenge.Lucro.Dominio.csproj" />
   </ItemGroup>
 </Project>
