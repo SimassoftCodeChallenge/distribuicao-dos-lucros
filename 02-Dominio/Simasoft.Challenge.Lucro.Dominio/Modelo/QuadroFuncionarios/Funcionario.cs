@@ -1,7 +1,4 @@
-﻿using Simasoft.Challenge.Lucro.Dominio.Comum;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 
 namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
 {
@@ -34,6 +31,17 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios
             Cargo = cargo;
             SalarioBruto = float.Parse(salariobruto.ToString());
             DataAdmissao = DateTime.Parse(dataadmissao);
+        }
+
+        public Funcionario(Int64 id, Int64 matricula, String nome, String area, String cargo, Decimal salariobruto, String dataadmissao, Int64 estagiario)
+        {
+            Id = id;
+            Matricula = matricula;
+            Nome = nome;
+            Area = area;
+            Cargo = cargo;
+            SalarioBruto = float.Parse(salariobruto.ToString());
+            DataAdmissao = DateTime.Parse(dataadmissao);            
         }
 
         private bool ValidaCargoDeEstagiario(string cargo)

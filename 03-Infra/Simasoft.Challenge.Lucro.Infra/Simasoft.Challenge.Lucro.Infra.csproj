@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,9 +10,8 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\02-Dominio\Simasoft.Challenge.Lucro.Dominio\Simasoft.Challenge.Lucro.Dominio.csproj" />
-    <ProjectReference Include="..\Simasoft.Challenge.Lucro.Infra.DapperExtensionsCore\Simasoft.Challenge.Lucro.Infra.DapperExtensionsCore.csproj" />
+  <ItemGroup>        
+    <ProjectReference Include="..\..\02-Dominio\Simasoft.Challenge.Lucro.Dominio.Contratos\Simasoft.Challenge.Lucro.Dominio.Contratos.csproj" />    
   </ItemGroup>
 
 </Project>
