@@ -12,6 +12,11 @@ namespace Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio
             {                
                 return new RepositorioFuncionario(connectionStrings);
             });
+
+            servicos.AddSingleton<IRepositorioFuncionarioAsync, RepositorioFuncionarioAsync>(sp =>
+            {                
+                return new RepositorioFuncionarioAsync(connectionStrings);
+            });
             return servicos;
         }
     }
