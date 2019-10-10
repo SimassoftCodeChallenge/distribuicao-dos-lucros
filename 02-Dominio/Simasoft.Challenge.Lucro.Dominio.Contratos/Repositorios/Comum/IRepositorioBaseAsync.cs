@@ -10,7 +10,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios.Comum
          Task<long> InserirAsync(T obj);
          Task InserirAsync(IEnumerable<T> obj);                          
          Task InserirAsync(T[] obj);
-         Task<IEnumerable<T>> ListarTodosAsync();  
+         Task<IEnumerable<T>> ListarTodosAsync();           
          Task<IEnumerable<T>> ListarPorAsync(object filtro);
     }
 }
