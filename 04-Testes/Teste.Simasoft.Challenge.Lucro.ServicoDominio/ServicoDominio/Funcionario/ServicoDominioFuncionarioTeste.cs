@@ -9,13 +9,13 @@ using Simasoft.Challenge.Lucro.Dominio.Contratos.Servicos;
 using Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio;
 using modelo = Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios;
 using System.Threading.Tasks;
+using Simasoft.Challenge.Lucro.Infra.CrossCutting.IoC.Dominio;
 
 namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionario
 {
     [TestClass]
     public class ServicoDominioFuncionarioTeste
-    {
-        protected IRepositorioFuncionario _repositorio;
+    {        
         protected IServicoDominioFuncionario _dominioServico;
 
         [TestInitialize]
@@ -27,6 +27,8 @@ namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionar
 
             var service = new ServiceCollection();
             service.AdicionarInjecaoDependenciaRepositorio(connectionStrings);
+            service.AdicionarInjecaoDependenciaDominio();
+                        
             var serviceProvider = service.BuildServiceProvider();            
             _dominioServico = serviceProvider.GetService<IServicoDominioFuncionario>();
         }

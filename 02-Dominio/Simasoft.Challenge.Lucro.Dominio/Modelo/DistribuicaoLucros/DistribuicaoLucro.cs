@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios;
 
 namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
 {
@@ -18,6 +17,19 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
             {
                 _participantes.AddRange(participantes);
             }
+            _salarioMinimoNacional = salarioMinimoNacional;
+            _valorDisponibilizado = valorDisponibilizado;
+
+            CalcularParticipacaoDosFuncionarios();
+        }
+
+        public DistribuicaoLucro(List<Funcionario> funcionarios, float valorDisponibilizado, float salarioMinimoNacional)
+        {
+            _participantes = new List<Participacao>();            
+            funcionarios.ForEach(x => {
+                _participantes.Add(new Participacao(x,salarioMinimoNacional));
+            });  
+
             _salarioMinimoNacional = salarioMinimoNacional;
             _valorDisponibilizado = valorDisponibilizado;
 
