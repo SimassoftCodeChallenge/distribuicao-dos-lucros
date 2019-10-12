@@ -5,26 +5,43 @@ using Microsoft.AspNetCore.Mvc;
 using Simasoft.Challenge.Lucro.Api.Models;
 using Simasoft.Challenge.Lucro.Aplicacao.Contratos;
 using Simasoft.Challenge.Lucro.Aplicacao.Dto.DistribuicaoLucro;
+using Simasoft.Challenge.Lucro.Infra.CrossCutting.Config;
 
 namespace Simasoft.Challenge.Lucro.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Produces("application/json")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class DistribuicaoLucroController: BaseController
     {
         private readonly IAplicacaoDistribuicaoLucros _appDistribuicao;
+        private readonly ConfiguracaoAplicacao _config;
 
-        public DistribuicaoLucroController(IAplicacaoDistribuicaoLucros appDistribuicao)
+        public DistribuicaoLucroController(IAplicacaoDistribuicaoLucros appDistribuicao, ConfiguracaoAplicacao config)
         {
             _appDistribuicao = appDistribuicao;
+            _config = config;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ProcessaDistribuicaoDosLucros()
+        /// <summary>
+        /// Processa o Cálculo da Distribuição dos Lucros para os Funcionários
+        /// </summary>
+        /// Request de Exemplo:
+        /// 
+        ///     GET /distribuicaolucro/124500
+        ///         
+        /// <param name="valorDisponibilizado">Valor disponibilizado para Distribuição</param>
+        /// <returns>A informação de Processamento.</returns>
+        /// <response code="200">O cadastro foi executado com sucesso.</response>      
+        /// <response code="500">O cadastro não foi concluído por ter retornado algum erro.</response>      
+        [HttpGet("{valorDisponibilizado}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> ProcessaDistribuicaoDosLucros(decimal valorDisponibilizado)
         {
             try
             {
-               var resultado = await Task.FromResult(_appDistribuicao.ExecutaDistribuicao(0,998f));
+               var resultado = await Task.FromResult(_appDistribuicao.ExecutaDistribuicao(valorDisponibilizado,float.Parse(_config.SalarioMinimoNacional)));
                return Ok(HidrataModel(resultado));
             }
             catch (Exception ex)
@@ -50,7 +67,12 @@ namespace Simasoft.Challenge.Lucro.Api.Controllers
                     ValorParticipacao = linha.ValorParticipacao
                 });
             }
-
+            if(model.Participacoes != null){
+                model.Participacoes.AddRange(participantesModel);
+            }else{
+                model.Participacoes = new List<ParticipacaoModel>();
+                model.Participacoes.AddRange(participantesModel);
+            }
             return model;
         }
     }

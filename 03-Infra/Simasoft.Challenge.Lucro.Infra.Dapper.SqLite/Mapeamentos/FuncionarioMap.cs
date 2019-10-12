@@ -14,6 +14,7 @@ namespace Simasoft.Challenge.Lucro.Infra.Sqlite.Mapeamentos
             Map(f => f.Area).Column("area");
             Map(f => f.Cargo).Column("cargo");
             Map(f => f.SalarioBruto).Column("salariobruto");
+            Map(f => f.DataAdmissao).Column("dataadmissao");
             Map(f => f.Estagiario).Column("estagiario");            
         }
     }

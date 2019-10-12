@@ -8,12 +8,12 @@ namespace Simasoft.Challenge.Lucro.Dominio.Servicos.DistribuicaoLucros
 {
     public class ServicoDominioDistribuicaoLucros: IServicoDominioDistribuicaoLucros
     {
-        public DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Participacao> participantes, float valorDisponibilizado, float salarioMinimoNacional)
+        public DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Participacao> participantes, decimal valorDisponibilizado, float salarioMinimoNacional)
         {            
             return new DistribuicaoLucro(participantes, valorDisponibilizado, salarioMinimoNacional);
         }
 
-        public DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Modelo.QuadroFuncionarios.Funcionario> funcionarios, float valorDisponibilizado, float salarioMinimoNacional)
+        public DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Modelo.QuadroFuncionarios.Funcionario> funcionarios, decimal valorDisponibilizado, float salarioMinimoNacional)
         {
             return new DistribuicaoLucro(funcionarios,valorDisponibilizado,salarioMinimoNacional);
         }

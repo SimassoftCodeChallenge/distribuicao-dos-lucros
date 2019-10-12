@@ -7,11 +7,9 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/04-Testes/Tdd.Simasoft.Challenge.Lucro/Tdd.Simasoft.Challenge.Lucro.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "${workspaceFolder}/00-Fronteira/Simasoft.Challenge.Lucro.Api/Simasoft.Challenge.Lucro.Api.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$tsc"
         },
         {
             "label": "publish",
@@ -19,11 +17,9 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/04-Testes/Tdd.Simasoft.Challenge.Lucro/Tdd.Simasoft.Challenge.Lucro.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "${workspaceFolder}/00-Fronteira/Simasoft.Challenge.Lucro.Api/Simasoft.Challenge.Lucro.Api.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$tsc"
         },
         {
             "label": "watch",
@@ -32,11 +28,9 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/04-Testes/Tdd.Simasoft.Challenge.Lucro/Tdd.Simasoft.Challenge.Lucro.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
+                "${workspaceFolder}/00-Fronteira/Simasoft.Challenge.Lucro.Api/Simasoft.Challenge.Lucro.Api.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$tsc"
         }
     ]
 }

@@ -9,6 +9,8 @@ using Dapper;
 using Simasoft.Challenge.Lucro.Dominio.Contratos.Repositorios;
 using Simasoft.Challenge.Lucro.Infra.CrossCutting.Repositorio;
 using entidade = Simasoft.Challenge.Lucro.Infra.Entidades;
+using Simasoft.Challenge.Lucro.Infra.CrossCutting.Config;
+using System.Collections.Generic;
 
 namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
 {
@@ -19,21 +21,23 @@ namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
         protected string _connectionStrings;
         protected const string DMLAPAGATUDO = "DELETE FROM funcionario";
         protected const string DMLCONTARLINHAS = "SELECT COUNT(*) FROM funcionario";
+        private static string _sessao = "Sqlite";
+        private static ConfiguracaoAplicacao _configClient; 
 
         [TestInitialize]
         public void Inicializar()
         {
             var config = ConfiguracaoInicial();
-            var relativePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "");
-            _connectionStrings = $"{config["DatabaseConnection"].Replace("..",relativePath)}";
+            //var relativePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "");
+            //_connectionStrings = $"{config["DatabaseConnection"].Replace("..",relativePath)}";
+            var appconfig = GetConfigObject();
 
             var service = new ServiceCollection();
-            service.AdicionarInjecaoDependenciaRepositorio(_connectionStrings);
+            service.AdicionarInjecaoDependenciaRepositorio(appconfig);
             var serviceProvider = service.BuildServiceProvider();
 
             _repositorio = serviceProvider.GetService<IRepositorioFuncionario>();            
         }
-
         private void LimparBase()
         {
             if(ContarLinhas() > 0)
@@ -43,7 +47,7 @@ namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
                     conexao.Query(DMLAPAGATUDO);                    
                 }
             }            
-        }
+        }        
 
         private int ContarLinhas()
         {
@@ -53,7 +57,27 @@ namespace Teste.Simasoft.Challenge.Lucro.Repositorio.Funcionario
               total = conexao.QueryFirstOrDefault<int>(DMLCONTARLINHAS);                    
             }
             return total;
+        }        
+
+        private static ConfiguracaoAplicacao PopulaObjeto()
+        {
+           _configClient = new ConfiguracaoAplicacao();
+            var configClientType = _configClient.GetType();            
+            var session = ConfiguracaoInicial().AsEnumerable();                        
+            var arcabouco = session.ToDictionary(x => x.Key,x => x.Value)
+                .Where(x => x.Key.Contains(_sessao + ":") && x.Value != null)
+                .Select(t => new KeyValuePair<string,string>(t.Key.Replace(_sessao + ":",""),t.Value));
+            
+            arcabouco.ToList().ForEach(x => {
+                configClientType
+                    .GetProperty(x.Key)
+                    .SetValue(_configClient, x.Value, null);
+            });
+            return _configClient;
         }
+
+        public static ConfiguracaoAplicacao GetConfigObject() => PopulaObjeto();
+        public static ConfiguracaoAplicacao GetConfiguracaoClient() => _configClient;
 
         [TestMethod()]
         public void Integracao()

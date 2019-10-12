@@ -19,7 +19,7 @@ namespace Simasoft.Challenge.Lucro.Aplicacao.Servicos
             _servicoDistribuicaoLucros = servicoDistribuicaoLucros;
         }
 
-        public ResultadoDistribuicaoLucrosDto ExecutaDistribuicao(float valorDisponibilizado,float salarioMinimoNacional)
+        public ResultadoDistribuicaoLucrosDto ExecutaDistribuicao(decimal valorDisponibilizado,float salarioMinimoNacional)
         {
             IEnumerable<Funcionario> funcionarios = _servicoFuncionario.ListarTodos().Result;
             List<Funcionario> funcionarioList = funcionarios.ToList();
@@ -45,7 +45,12 @@ namespace Simasoft.Challenge.Lucro.Aplicacao.Servicos
                     ValorParticipacao = linha.ValorDeParticipacaoRecebido()
                 });
             }
-
+            if(dto.Participacoes != null){
+                dto.Participacoes.AddRange(participantesDto);
+            }else{
+                dto.Participacoes = new List<ParticipacaoDto>();
+                dto.Participacoes.AddRange(participantesDto);
+            }            
             return dto;
         }
     }

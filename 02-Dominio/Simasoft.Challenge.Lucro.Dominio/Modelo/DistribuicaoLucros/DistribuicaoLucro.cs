@@ -7,10 +7,10 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
     public sealed class DistribuicaoLucro
     {
         private readonly List<Participacao> _participantes;
-        private readonly float _valorDisponibilizado;
+        private readonly decimal _valorDisponibilizado;
         private readonly float _salarioMinimoNacional;
 
-        public DistribuicaoLucro(List<Participacao> participantes, float valorDisponibilizado, float salarioMinimoNacional)
+        public DistribuicaoLucro(List<Participacao> participantes, decimal valorDisponibilizado, float salarioMinimoNacional)
         {
             _participantes = new List<Participacao>();
             if (participantes != null && participantes.Count > 0)
@@ -23,7 +23,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
             CalcularParticipacaoDosFuncionarios();
         }
 
-        public DistribuicaoLucro(List<Funcionario> funcionarios, float valorDisponibilizado, float salarioMinimoNacional)
+        public DistribuicaoLucro(List<Funcionario> funcionarios, decimal valorDisponibilizado, float salarioMinimoNacional)
         {
             _participantes = new List<Participacao>();            
             funcionarios.ForEach(x => {
@@ -41,17 +41,17 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
             get => InformaTotalDeFuncionarios();
         }
 
-        public float TotalDistribuido
+        public decimal TotalDistribuido
         {
             get => InformaTotalDistribuido();
         }
 
-        public float SaldoTotalDisponibilizado
+        public decimal SaldoTotalDisponibilizado
         {
             get => InformaSaldoTotalDisponibilizado();
         }
 
-        public float TotalDisponibilizado
+        public decimal TotalDisponibilizado
         {
             get => _valorDisponibilizado;
         }
@@ -79,7 +79,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Modelo.DistribuicaoLucros
         public IReadOnlyCollection<Participacao> Participantes => _participantes.ToArray();
 
         private int InformaTotalDeFuncionarios() => _participantes.ToArray().Length;
-        private float InformaTotalDistribuido() => _participantes.ToArray().Sum(x => x.ValorDeParticipacaoRecebido());
-        private float InformaSaldoTotalDisponibilizado() => _valorDisponibilizado - InformaTotalDistribuido();
+        private decimal InformaTotalDistribuido() => (decimal) _participantes.ToArray().Sum(x => x.ValorDeParticipacaoRecebido());
+        private decimal InformaSaldoTotalDisponibilizado() => _valorDisponibilizado - (decimal)InformaTotalDistribuido();
     }
 }

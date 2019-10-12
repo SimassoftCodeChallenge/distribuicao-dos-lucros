@@ -5,6 +5,7 @@ using Simasoft.Challenge.Lucro.Dominio.Contratos.Servicos;
 using modelo = Simasoft.Challenge.Lucro.Dominio.Modelo.QuadroFuncionarios;
 using entidade = Simasoft.Challenge.Lucro.Infra.Entidades;
 using System.Collections.Generic;
+using System;
 
 namespace Simasoft.Challenge.Lucro.Dominio.Servicos.Funcionario
 {
@@ -41,7 +42,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Servicos.Funcionario
                 Nome = funcionario.Nome,
                 Area = funcionario.Area,
                 Cargo = funcionario.Cargo,
-                DataAdmissao = funcionario.DataAdmissao,
+                DataAdmissao = funcionario.DataAdmissao.ToString("yyyy/MM/dd HH:mm:ss"),
                 SalarioBruto = funcionario.SalarioBruto,
                 Estagiario = funcionario.Estagiario
             };
@@ -63,7 +64,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Servicos.Funcionario
             foreach(var linha in funcionarios)
             {
                 listaModelo.Add(
-                    new modelo.Funcionario(linha.Matricula,linha.Nome,linha.Area,linha.Cargo,linha.SalarioBruto,linha.DataAdmissao)
+                    new modelo.Funcionario(linha.Matricula,linha.Nome,linha.Area,linha.Cargo,linha.SalarioBruto,DateTime.Parse(linha.DataAdmissao))
                 );
             }
 
