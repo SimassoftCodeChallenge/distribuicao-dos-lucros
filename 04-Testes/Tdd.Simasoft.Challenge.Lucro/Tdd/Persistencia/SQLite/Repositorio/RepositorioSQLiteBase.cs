@@ -25,12 +25,12 @@ namespace Tdd.Simasoft.Challenge.Lucro.Tdd.Persistencia.SQLite.Repositorio
             SQLiteConnectionFactory(connectionStrings);
         }
 
-        public async Task<T> Listar(object predicado)
+        public Task<T> Listar(object predicado)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> ListarTodos()
+        public Task<IEnumerable<T>> ListarTodos()
         {
             throw new NotImplementedException();
         }
