@@ -15,7 +15,7 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
             Area = area;
             Cargo = cargo;
             SalarioBruto = salarioBruto;
-            DataAdmissao = dataAdmissao;
+            DataAdmissao = dataAdmissao.ToString("yyyy/MM/dd HH:mm:ss");
         }
 
         public Funcionario(long? matricula, string nome, string area, string cargo, float salarioBruto, DateTime dataAdmissao)
@@ -25,7 +25,7 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
             Area = area;
             Cargo = cargo;
             SalarioBruto = salarioBruto;
-            DataAdmissao = dataAdmissao;
+            DataAdmissao = dataAdmissao.ToString("yyyy/MM/dd HH:mm:ss");
         }        
 
         public long Id { get ; set; }
@@ -34,7 +34,8 @@ namespace Simasoft.Challenge.Lucro.Infra.Entidades
         public string Area { get; set; }       
         public string Cargo { get; set; }        
         public float SalarioBruto { get; set; }        
-        public DateTime DataAdmissao { get; set; }
+        //public DateTime DataAdmissao { get; set; }
+        public string DataAdmissao { get; set; }
         public bool Estagiario { get; set; }        
     }
 }

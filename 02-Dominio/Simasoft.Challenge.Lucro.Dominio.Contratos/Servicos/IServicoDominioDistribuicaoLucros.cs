@@ -7,7 +7,7 @@ namespace Simasoft.Challenge.Lucro.Dominio.Contratos.Servicos
 {
     public interface IServicoDominioDistribuicaoLucros
     {
-         DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Participacao> participantes, float valorDisponibilizado, float salarioMinimoNacional);
-         DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Funcionario> funcionarios, float valorDisponibilizado, float salarioMinimoNacional);
+         DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Participacao> participantes, decimal valorDisponibilizado, float salarioMinimoNacional);
+         DistribuicaoLucro ExecutaDistribuicaoDosLucros(List<Funcionario> funcionarios, decimal valorDisponibilizado, float salarioMinimoNacional);
     }
 }

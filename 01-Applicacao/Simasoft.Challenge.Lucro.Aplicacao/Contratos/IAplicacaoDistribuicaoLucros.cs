@@ -5,6 +5,6 @@ namespace Simasoft.Challenge.Lucro.Aplicacao.Contratos
 {
     public interface IAplicacaoDistribuicaoLucros
     {
-         ResultadoDistribuicaoLucrosDto ExecutaDistribuicao(float valorDisponibilizado,float salarioMinimoNacional);
+         ResultadoDistribuicaoLucrosDto ExecutaDistribuicao(decimal valorDisponibilizado,float salarioMinimoNacional);
     }
 }

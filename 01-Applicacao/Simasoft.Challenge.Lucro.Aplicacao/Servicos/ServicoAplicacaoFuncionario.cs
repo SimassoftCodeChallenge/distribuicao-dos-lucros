@@ -19,8 +19,14 @@ namespace Simasoft.Challenge.Lucro.Aplicacao.Servicos
 
         public async Task CadastrarFuncionarios(FuncionarioDto[] funcionarios)
         {
+            var modelos = HidrataModelo(funcionarios);
+            await _servicoFuncionario.CadastrarFuncionarios(modelos);
+        }
+
+        public async Task<IEnumerable<FuncionarioDto>> ListarTodosOsFuncionarios()
+        {
             var entidades = await _servicoFuncionario.ListarTodos();
-            HidrataDto(entidades.ToArray());
+            return HidrataDto(entidades.ToArray());
         }
 
         private FuncionarioDto[] HidrataDto(Funcionario[] entidades){
@@ -36,6 +42,18 @@ namespace Simasoft.Challenge.Lucro.Aplicacao.Servicos
                         DataAdmissao = linha.DataAdmissao,
                         SalarioBruto = linha.SalarioBruto                        
                     }
+                );
+            }
+            
+            return funcionarios.ToArray();
+        }
+
+        private Funcionario[] HidrataModelo(FuncionarioDto[] dtos){
+            List<Funcionario> funcionarios = new List<Funcionario>();
+            foreach(var linha in dtos)
+            {
+                funcionarios.Add(
+                    new Funcionario(linha.Matricula,linha.Nome,linha.Area,linha.Cargo,linha.SalarioBruto,linha.DataAdmissao)                        
                 );
             }
             

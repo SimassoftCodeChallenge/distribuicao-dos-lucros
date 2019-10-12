@@ -25,8 +25,7 @@ namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Distribui
             var connectionStrings = $"{config["DatabaseConnection"].Replace("..", relativePath)}";
             _salarioMinimo = float.Parse(config["SalarioMinimoNacional"]);
 
-            var service = new ServiceCollection();
-            service.AdicionarInjecaoDependenciaRepositorio(connectionStrings);
+            var service = new ServiceCollection();            
             service.AdicionarInjecaoDependenciaDominio();
                         
             var serviceProvider = service.BuildServiceProvider();            

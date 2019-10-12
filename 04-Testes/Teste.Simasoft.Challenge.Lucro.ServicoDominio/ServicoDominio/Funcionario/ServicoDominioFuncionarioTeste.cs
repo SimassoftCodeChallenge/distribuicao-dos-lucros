@@ -25,8 +25,7 @@ namespace Teste.Simasoft.Challenge.Lucro.ServicoDominio.ServicoDominio.Funcionar
             var relativePath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName.Replace("\\bin", "");
             var connectionStrings = $"{config["DatabaseConnection"].Replace("..", relativePath)}";
 
-            var service = new ServiceCollection();
-            service.AdicionarInjecaoDependenciaRepositorio(connectionStrings);
+            var service = new ServiceCollection();            
             service.AdicionarInjecaoDependenciaDominio();
                         
             var serviceProvider = service.BuildServiceProvider();            
